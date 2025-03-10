@@ -14,9 +14,14 @@ export class ReservationsController extends Contorller {
         this.service = new PageService();
     }
 
-    public async test(Request: Request, Response: Response) {
-        await DB.connection?.query("USE lab_b310;");
-        const resp = await DB.connection?.query("SELECT * FROM Reservations;");
-        Response.send(resp)
+    public async test(req: Request, res: Response) {
+        try {
+            await DB.connection?.query("USE lab_b310;");
+            const result = await DB.connection?.query("SELECT * FROM Reservations;");
+            res.json(result);
+        } catch (error) {
+            res.status(500).send("Database query failed");
+        }
     }
-}
+    
+    }
